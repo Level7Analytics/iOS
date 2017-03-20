@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tipLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tipControl: UISegmentedControl!
+    var defaultTipOptionIndex: Int = 1
     var tipPercentOptions = [18, 20, 25]
     
     override func viewDidLoad() {
@@ -21,6 +22,7 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         if UserDefaults.standard.object(forKey: "tipPercentOption1") != nil
         {
             tipPercentOptions[0] = Int(UserDefaults.standard.string(forKey: "tipPercentOption1")!)!
@@ -33,12 +35,27 @@ class ViewController: UIViewController {
         {
             tipPercentOptions[2] = Int(UserDefaults.standard.string(forKey: "tipPercentOption3")!)!
         }
+        
         tipControl.setTitle(String(tipPercentOptions[0]) + "%", forSegmentAt: 0)
         tipControl.setTitle(String(tipPercentOptions[1]) + "%", forSegmentAt: 1)
         tipControl.setTitle(String(tipPercentOptions[2]) + "%", forSegmentAt: 2)
         
+        if UserDefaults.standard.object(forKey: "defaultTipOptionIndex") != nil
+        {
+            defaultTipOptionIndex = Int(UserDefaults.standard.string(forKey: "defaultTipOptionIndex")!)!
+            tipControl.selectedSegmentIndex = defaultTipOptionIndex
+        }
+        
         CalculateTip(self)
     }
+    
+//    func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "ShowSettingsSegue" {
+//            if let destinationVC = segue.destination as? SettingsViewController {
+//                destinationVC.defaultTipOptionIndex = defaultTipOptionIndex
+//            }
+//         }
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
